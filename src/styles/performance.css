@@ -1,0 +1,344 @@
+/* ==========================================================================
+   PERFORMANCE OPTIMIZATIONS
+   Modern 2025 Liquid Glass Design System - Performance Layer
+   ========================================================================== */
+
+/* GPU Acceleration Base Classes */
+.gpu-accelerated {
+    transform: translateZ(0);
+    will-change: transform, opacity, backdrop-filter;
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+.gpu-accelerated-hover {
+    transform: translateZ(0);
+    will-change: transform, box-shadow, border-color, background;
+    backface-visibility: hidden;
+}
+
+.gpu-accelerated-animation {
+    transform: translateZ(0);
+    will-change: transform, opacity, filter;
+    backface-visibility: hidden;
+    contain: layout style paint;
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    
+    /* Disable particle animations */
+    .particle,
+    .floating-particles,
+    .background-particles {
+        animation: none !important;
+        opacity: 0.3 !important;
+    }
+    
+    /* Simplify glass effects */
+    .glass-morphism,
+    .liquid-glass-container,
+    .glass-settings-section,
+    .glass-slide-container {
+        backdrop-filter: blur(5px) !important;
+        animation: none !important;
+    }
+    
+    /* Remove hover transforms */
+    .glass-button:hover,
+    .glass-input:hover,
+    .glass-card:hover,
+    .glass-session-item:hover,
+    .glass-help-item:hover {
+        transform: none !important;
+    }
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+    :root {
+        --glass-primary: rgba(0, 0, 0, 0.9);
+        --glass-secondary: rgba(0, 0, 0, 0.8);
+        --glass-border: rgba(255, 255, 255, 0.8);
+        --text-primary: #ffffff;
+        --text-secondary: #e0e0e0;
+        --accent-primary: #00d4ff;
+        --accent-secondary: #ff6b6b;
+    }
+    
+    .glass-button,
+    .glass-input,
+    .glass-card {
+        border-width: 2px;
+        box-shadow: none;
+    }
+}
+
+/* Memory Optimization */
+.memory-optimized {
+    contain: layout style paint;
+    content-visibility: auto;
+    contain-intrinsic-size: 0 500px;
+}
+
+/* Intersection Observer Optimization */
+.lazy-animate {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.lazy-animate.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Container Query Optimization */
+.container-optimized {
+    container-type: inline-size;
+    contain: layout style;
+}
+
+/* Scroll Performance */
+.smooth-scroll {
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: var(--glass-border) transparent;
+}
+
+.smooth-scroll::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.smooth-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.smooth-scroll::-webkit-scrollbar-thumb {
+    background: var(--glass-border);
+    border-radius: var(--radius-full);
+    transition: background var(--duration-fast) ease;
+}
+
+.smooth-scroll::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-primary);
+}
+
+/* Critical CSS Inlining Helpers */
+.critical-above-fold {
+    /* Styles for above-the-fold content */
+    contain: layout style paint;
+    will-change: auto;
+}
+
+.non-critical-below-fold {
+    /* Styles for below-the-fold content */
+    content-visibility: auto;
+    contain-intrinsic-size: 0 200px;
+}
+
+/* Animation Performance Classes */
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s var(--ease-glass), transform 0.8s var(--ease-glass);
+}
+
+.animate-on-scroll.in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Backdrop Filter Optimization */
+.backdrop-optimized {
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    /* Fallback for browsers without backdrop-filter support */
+    background: var(--glass-primary);
+}
+
+@supports not (backdrop-filter: blur(10px)) {
+    .backdrop-optimized {
+        background: var(--glass-fallback);
+    }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+    /* Remove hover effects on touch devices */
+    .glass-button:hover,
+    .glass-input:hover,
+    .glass-card:hover {
+        transform: none;
+        box-shadow: var(--glass-shadow);
+    }
+    
+    /* Increase touch targets */
+    .glass-button,
+    .glass-nav-button,
+    .progress-dot {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    /* Optimize scrolling */
+    .glass-sessions-list,
+    .glass-response-container {
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .glass-morphism,
+    .liquid-glass-container,
+    .floating-particles,
+    .background-particles {
+        background: white !important;
+        backdrop-filter: none !important;
+        box-shadow: none !important;
+        border: 1px solid #ccc !important;
+    }
+    
+    .glass-button,
+    .glass-input {
+        background: white !important;
+        color: black !important;
+        border: 1px solid #333 !important;
+    }
+    
+    /* Hide non-essential elements */
+    .floating-particles,
+    .background-particles,
+    .particle {
+        display: none !important;
+    }
+}
+
+/* Dark Mode Optimizations */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --glass-primary: rgba(15, 15, 15, 0.8);
+        --glass-secondary: rgba(25, 25, 25, 0.7);
+        --glass-border: rgba(255, 255, 255, 0.1);
+        --text-primary: #ffffff;
+        --text-secondary: #b0b0b0;
+        --text-tertiary: #808080;
+    }
+}
+
+/* Light Mode Optimizations */
+@media (prefers-color-scheme: light) {
+    :root {
+        --glass-primary: rgba(255, 255, 255, 0.8);
+        --glass-secondary: rgba(245, 245, 245, 0.7);
+        --glass-border: rgba(0, 0, 0, 0.1);
+        --text-primary: #1a1a1a;
+        --text-secondary: #4a4a4a;
+        --text-tertiary: #7a7a7a;
+    }
+}
+
+/* Battery Optimization */
+@media (prefers-reduced-motion: reduce) {
+    .battery-optimized {
+        animation: none !important;
+        transition: none !important;
+        backdrop-filter: none !important;
+        box-shadow: none !important;
+    }
+}
+
+/* Network Optimization Classes */
+.preload-critical {
+    /* For critical resources that should be preloaded */
+    font-display: swap;
+}
+
+.lazy-load {
+    /* For non-critical resources */
+    loading: lazy;
+}
+
+/* Performance Monitoring Helpers */
+.perf-mark {
+    /* Add performance marks for monitoring */
+    contain: layout style paint;
+}
+
+/* Memory Leak Prevention */
+.cleanup-on-unmount {
+    /* Ensure proper cleanup of event listeners and observers */
+    pointer-events: auto;
+}
+
+.cleanup-on-unmount.unmounted {
+    pointer-events: none;
+    will-change: auto;
+    transform: none;
+    animation: none;
+    transition: none;
+}
+
+/* CPU Optimization */
+.cpu-optimized {
+    /* Reduce CPU usage for complex layouts */
+    contain: layout style;
+    transform: translateZ(0);
+    will-change: auto;
+}
+
+/* Rendering Optimization */
+.render-optimized {
+    /* Optimize rendering performance */
+    contain: layout style paint;
+    isolation: isolate;
+    transform: translateZ(0);
+}
+
+/* Animation Frame Optimization */
+.raf-optimized {
+    /* Use requestAnimationFrame for smooth animations */
+    animation-fill-mode: both;
+    animation-timing-function: var(--ease-glass);
+}
+
+/* Composite Layer Optimization */
+.composite-layer {
+    /* Force composite layer for better performance */
+    transform: translateZ(0);
+    opacity: 0.99;
+    will-change: transform, opacity;
+}
+
+/* Layout Thrashing Prevention */
+.layout-stable {
+    /* Prevent layout thrashing */
+    contain: layout;
+    min-height: 0;
+    min-width: 0;
+}
+
+/* Paint Optimization */
+.paint-optimized {
+    /* Optimize paint operations */
+    contain: paint;
+    isolation: isolate;
+}
+
+/* Style Recalculation Optimization */
+.style-optimized {
+    /* Reduce style recalculation */
+    contain: style;
+    will-change: auto;
+}
