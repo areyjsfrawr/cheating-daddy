@@ -6,145 +6,219 @@ export class AssistantView extends LitElement {
             height: 100%;
             display: flex;
             flex-direction: column;
+            container-type: inline-size;
         }
 
         * {
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-primary);
             cursor: default;
         }
 
-        .response-container {
-            height: calc(100% - 60px);
+        .glass-response-container {
+            height: calc(100% - 80px);
             overflow-y: auto;
-            border-radius: 10px;
-            font-size: var(--response-font-size, 18px);
-            line-height: 1.6;
-            background: var(--main-content-background);
-            padding: 16px;
+            border-radius: var(--radius-xl);
+            font-size: var(--response-font-size, var(--text-lg));
+            line-height: var(--leading-relaxed);
+            
+            /* Glass Morphism */
+            background: var(--glass-primary);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+            
+            padding: var(--space-6);
             scroll-behavior: smooth;
             user-select: text;
             cursor: text;
+            
+            /* Scrolling Optimizations */
+            scrollbar-width: thin;
+            scrollbar-color: var(--glass-border) transparent;
+            
+            /* GPU Acceleration */
+            transform: translateZ(0);
+            will-change: scroll-position;
+        }
+
+        /* Enhanced Scrollbar Styling */
+        .glass-response-container::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        .glass-response-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .glass-response-container::-webkit-scrollbar-thumb {
+            background: var(--glass-border);
+            border-radius: var(--radius-full);
+            transition: background var(--duration-normal) var(--ease-smooth);
+        }
+
+        .glass-response-container::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-primary);
         }
 
         /* Allow text selection for all content within the response container */
-        .response-container * {
+        .glass-response-container * {
             user-select: text;
             cursor: text;
         }
 
         /* Restore default cursor for interactive elements */
-        .response-container a {
+        .glass-response-container a {
             cursor: pointer;
         }
 
-        /* Animated word-by-word reveal */
-        .response-container [data-word] {
+        /* Enhanced word-by-word reveal animation */
+        .glass-response-container [data-word] {
             opacity: 0;
-            filter: blur(10px);
+            filter: blur(4px);
             display: inline-block;
-            transition: opacity 0.5s, filter 0.5s;
+            transform: translateY(10px);
+            transition: all var(--duration-normal) var(--ease-glass);
         }
-        .response-container [data-word].visible {
+        
+        .glass-response-container [data-word].visible {
             opacity: 1;
-            filter: blur(0px);
+            filter: blur(0);
+            transform: translateY(0);
         }
 
-        /* Markdown styling */
-        .response-container h1,
-        .response-container h2,
-        .response-container h3,
-        .response-container h4,
-        .response-container h5,
-        .response-container h6 {
-            margin: 1.2em 0 0.6em 0;
-            color: var(--text-color);
-            font-weight: 600;
+        /* Enhanced Markdown styling with Glass Aesthetics */
+        .glass-response-container h1,
+        .glass-response-container h2,
+        .glass-response-container h3,
+        .glass-response-container h4,
+        .glass-response-container h5,
+        .glass-response-container h6 {
+            margin: var(--space-6) 0 var(--space-3) 0;
+            color: var(--text-primary);
+            font-weight: var(--font-semibold);
+            line-height: var(--leading-tight);
+            
+            /* Gradient Text Effect for Headers */
+            background: linear-gradient(135deg, 
+                var(--text-primary) 0%, 
+                var(--accent-primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        .response-container h1 {
-            font-size: 1.8em;
-        }
-        .response-container h2 {
-            font-size: 1.5em;
-        }
-        .response-container h3 {
-            font-size: 1.3em;
-        }
-        .response-container h4 {
-            font-size: 1.1em;
-        }
-        .response-container h5 {
-            font-size: 1em;
-        }
-        .response-container h6 {
-            font-size: 0.9em;
+        .glass-response-container h1 { font-size: var(--text-3xl); }
+        .glass-response-container h2 { font-size: var(--text-2xl); }
+        .glass-response-container h3 { font-size: var(--text-xl); }
+        .glass-response-container h4 { font-size: var(--text-lg); }
+        .glass-response-container h5 { font-size: var(--text-base); }
+        .glass-response-container h6 { font-size: var(--text-sm); }
+
+        .glass-response-container p {
+            margin: var(--space-4) 0;
+            color: var(--text-primary);
+            line-height: var(--leading-relaxed);
         }
 
-        .response-container p {
-            margin: 0.8em 0;
-            color: var(--text-color);
+        .glass-response-container ul,
+        .glass-response-container ol {
+            margin: var(--space-4) 0;
+            padding-left: var(--space-8);
+            color: var(--text-primary);
         }
 
-        .response-container ul,
-        .response-container ol {
-            margin: 0.8em 0;
-            padding-left: 2em;
-            color: var(--text-color);
+        .glass-response-container li {
+            margin: var(--space-2) 0;
+            line-height: var(--leading-relaxed);
         }
 
-        .response-container li {
-            margin: 0.4em 0;
-        }
-
-        .response-container blockquote {
-            margin: 1em 0;
-            padding: 0.5em 1em;
-            border-left: 4px solid var(--focus-border-color);
-            background: rgba(0, 122, 255, 0.1);
+        .glass-response-container blockquote {
+            margin: var(--space-5) 0;
+            padding: var(--space-4) var(--space-5);
+            
+            /* Glass Blockquote */
+            background: var(--glass-secondary);
+            backdrop-filter: var(--glass-blur-subtle);
+            border: 1px solid var(--glass-border);
+            border-left: 4px solid var(--accent-primary);
+            border-radius: var(--radius-lg);
+            
             font-style: italic;
+            color: var(--text-secondary);
+            box-shadow: var(--glass-shadow-sm);
         }
 
-        .response-container code {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 0.2em 0.4em;
-            border-radius: 3px;
-            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-            font-size: 0.85em;
+        .glass-response-container code {
+            background: var(--glass-secondary);
+            backdrop-filter: var(--glass-blur-subtle);
+            border: 1px solid var(--glass-border-subtle);
+            padding: var(--space-1) var(--space-2);
+            border-radius: var(--radius-sm);
+            font-family: var(--font-mono);
+            font-size: var(--text-sm);
+            color: var(--accent-primary);
         }
 
-        .response-container pre {
-            background: var(--input-background);
-            border: 1px solid var(--button-border);
-            border-radius: 6px;
-            padding: 1em;
+        .glass-response-container pre {
+            /* Glass Code Block */
+            background: var(--glass-secondary);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-5);
             overflow-x: auto;
-            margin: 1em 0;
+            margin: var(--space-5) 0;
+            box-shadow: var(--glass-shadow-sm);
+            
+            /* Enhanced Scrollbar for Code Blocks */
+            scrollbar-width: thin;
+            scrollbar-color: var(--glass-border) transparent;
         }
 
-        .response-container pre code {
+        .glass-response-container pre::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .glass-response-container pre::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .glass-response-container pre::-webkit-scrollbar-thumb {
+            background: var(--glass-border);
+            border-radius: var(--radius-full);
+        }
+
+        .glass-response-container pre code {
             background: none;
+            border: none;
             padding: 0;
             border-radius: 0;
+            color: var(--text-primary);
         }
 
-        .response-container a {
-            color: var(--link-color);
+        .glass-response-container a {
+            color: var(--accent-primary);
             text-decoration: none;
+            font-weight: var(--font-medium);
+            transition: color var(--duration-fast) var(--ease-smooth);
         }
 
-        .response-container a:hover {
+        .glass-response-container a:hover {
+            color: var(--accent-primary-light);
             text-decoration: underline;
         }
 
-        .response-container strong,
-        .response-container b {
-            font-weight: 600;
-            color: var(--text-color);
+        .glass-response-container strong,
+        .glass-response-container b {
+            font-weight: var(--font-semibold);
+            color: var(--text-primary);
         }
 
-        .response-container em,
-        .response-container i {
+        .glass-response-container em,
+        .glass-response-container i {
             font-style: italic;
+            color: var(--text-secondary);
         }
 
         .response-container hr {
@@ -288,6 +362,240 @@ export class AssistantView extends LitElement {
 
         .save-button svg {
             stroke: currentColor !important;
+        }
+
+        /* Additional Glass Styles */
+        .glass-response-container hr {
+            border: none;
+            height: 1px;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                var(--glass-border) 50%, 
+                transparent 100%);
+            margin: var(--space-6) 0;
+        }
+
+        .glass-response-container table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: var(--space-5) 0;
+            background: var(--glass-secondary);
+            backdrop-filter: var(--glass-blur-subtle);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+
+        .glass-response-container th,
+        .glass-response-container td {
+            border: 1px solid var(--glass-border-subtle);
+            padding: var(--space-3) var(--space-4);
+            text-align: left;
+        }
+
+        .glass-response-container th {
+            background: var(--glass-primary);
+            font-weight: var(--font-semibold);
+            color: var(--text-primary);
+        }
+
+        /* Floating Glass Navigation Controls */
+        .glass-navigation-controls {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            padding: var(--space-3) var(--space-5);
+            margin-top: var(--space-4);
+            
+            /* Glass Morphism */
+            background: var(--glass-secondary);
+            backdrop-filter: var(--glass-blur-strong);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-2xl);
+            box-shadow: var(--glass-shadow);
+            
+            /* Floating Effect */
+            position: relative;
+            transform: translateZ(0);
+            will-change: transform, box-shadow;
+            
+            /* Entrance Animation */
+            animation: controlsEnter var(--duration-normal) var(--ease-glass) forwards;
+        }
+
+        @keyframes controlsEnter {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .glass-nav-button {
+            /* Circular Glass Navigation Button */
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-full);
+            background: var(--glass-primary);
+            backdrop-filter: var(--glass-blur-subtle);
+            border: 1px solid var(--glass-border);
+            
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            
+            transition: all var(--duration-normal) var(--ease-glass);
+            transform: translateZ(0);
+            will-change: transform, background, border-color, box-shadow;
+        }
+
+        .glass-nav-button:hover {
+            background: var(--glass-hover);
+            border-color: var(--accent-primary);
+            box-shadow: var(--glass-glow-primary);
+            transform: translateY(-2px) scale(1.05) translateZ(0);
+        }
+
+        .glass-nav-button:active {
+            transform: translateY(0) scale(1.02) translateZ(0);
+        }
+
+        .glass-nav-button:disabled {
+            background: var(--glass-disabled);
+            border-color: var(--glass-border-subtle);
+            color: var(--text-disabled);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .glass-text-input-container {
+            display: flex;
+            gap: var(--space-3);
+            margin-top: var(--space-4);
+            align-items: center;
+        }
+
+        .glass-text-input {
+            flex: 1;
+            background: var(--glass-secondary);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-4) var(--space-5);
+            
+            color: var(--text-primary);
+            font-family: var(--font-primary);
+            font-size: var(--text-base);
+            
+            transition: all var(--duration-normal) var(--ease-glass);
+        }
+
+        .glass-text-input:focus {
+            outline: none;
+            background: var(--glass-focus);
+            border-color: var(--accent-primary);
+            box-shadow: var(--glass-glow-primary);
+        }
+
+        .glass-text-input::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        /* Enhanced Empty State */
+        .glass-empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+            padding: var(--space-12) var(--space-6);
+            
+            /* Glass Container */
+            background: var(--glass-primary);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--glass-shadow);
+            
+            /* Entrance Animation */
+            animation: emptyStateEnter var(--duration-slow) var(--ease-glass) forwards;
+        }
+
+        @keyframes emptyStateEnter {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+                filter: blur(10px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+                filter: blur(0);
+            }
+        }
+
+        .empty-state-icon {
+            font-size: var(--text-6xl);
+            margin-bottom: var(--space-6);
+            
+            /* Gradient Icon */
+            background: linear-gradient(135deg, 
+                var(--accent-primary) 0%, 
+                var(--accent-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            
+            opacity: 0.7;
+            animation: iconPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes iconPulse {
+            0%, 100% { opacity: 0.7; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+
+        .empty-state-title {
+            font-size: var(--text-xl);
+            font-weight: var(--font-semibold);
+            margin-bottom: var(--space-3);
+            color: var(--text-primary);
+        }
+
+        .empty-state-description {
+            font-size: var(--text-sm);
+            line-height: var(--leading-relaxed);
+            color: var(--text-secondary);
+            max-width: 400px;
+        }
+
+        /* Responsive Design */
+        @container (max-width: 600px) {
+            .glass-response-container {
+                padding: var(--space-4);
+                font-size: var(--text-base);
+            }
+            
+            .glass-navigation-controls {
+                padding: var(--space-2) var(--space-4);
+                gap: var(--space-2);
+            }
+            
+            .glass-nav-button {
+                width: 36px;
+                height: 36px;
+            }
+            
+            .glass-empty-state {
+                padding: var(--space-8) var(--space-4);
+            }
         }
     `;
 
@@ -595,65 +903,70 @@ export class AssistantView extends LitElement {
         const isSaved = this.isResponseSaved();
 
         return html`
-            <div class="response-container" id="responseContainer"></div>
+            <!-- Glass Response Container -->
+            <div class="glass-response-container gpu-accelerated" id="responseContainer">
+                ${this.responses.length === 0 ? html`
+                    <div class="glass-empty-state">
+                        <div class="empty-state-icon">🤖</div>
+                        <h3 class="empty-state-title">AI Assistant Ready</h3>
+                        <p class="empty-state-description">
+                            I'm listening and ready to help you with your ${this.getProfileNames()[this.selectedProfile] || 'session'}. 
+                            Start speaking or type a message to get assistance.
+                        </p>
+                    </div>
+                ` : ''}
+            </div>
 
-            <div class="text-input-container">
-                <button class="nav-button" @click=${this.navigateToPreviousResponse} ?disabled=${this.currentResponseIndex <= 0}>
-                    <?xml version="1.0" encoding="UTF-8"?><svg
-                        width="24px"
-                        height="24px"
-                        stroke-width="1.7"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                        color="#ffffff"
-                    >
-                        <path d="M15 6L9 12L15 18" stroke="#ffffff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path>
+            <!-- Glass Navigation Controls -->
+            <div class="glass-navigation-controls gpu-accelerated">
+                <button 
+                    class="glass-nav-button" 
+                    @click=${this.navigateToPreviousResponse} 
+                    ?disabled=${this.currentResponseIndex <= 0}
+                    title="Previous response"
+                >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M15 6L9 12L15 18"/>
                     </svg>
                 </button>
 
-                ${this.responses.length > 0 ? html` <span class="response-counter">${responseCounter}</span> ` : ''}
+                ${this.responses.length > 0 ? html`
+                    <div class="nav-info">${responseCounter}</div>
+                ` : ''}
 
                 <button
-                    class="save-button ${isSaved ? 'saved' : ''}"
+                    class="glass-nav-button ${isSaved ? 'saved' : ''}"
                     @click=${this.saveCurrentResponse}
                     title="${isSaved ? 'Response saved' : 'Save this response'}"
                 >
-                    <?xml version="1.0" encoding="UTF-8"?><svg
-                        width="24px"
-                        height="24px"
-                        stroke-width="1.7"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <path
-                            d="M5 20V5C5 3.89543 5.89543 3 7 3H16.1716C16.702 3 17.2107 3.21071 17.5858 3.58579L19.4142 5.41421C19.7893 5.78929 20 6.29799 20 6.82843V20C20 21.1046 19.1046 22 18 22H7C5.89543 22 5 21 5 20Z"
-                            stroke="currentColor"
-                            stroke-width="1.7"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        ></path>
-                        <path d="M15 22V13H9V22" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path>
-                        <path d="M9 3V8H15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 21H5C4.44772 21 4 20.5523 4 20V4C4 3.44772 4.44772 3 5 3H16L20 7V20C20 20.5523 19.5523 21 19 21Z"/>
+                        <path d="M17 21V13H7V21"/>
+                        <path d="M7 3V8H15"/>
                     </svg>
                 </button>
 
-                <input type="text" id="textInput" placeholder="Type a message to the AI..." @keydown=${this.handleTextKeydown} />
-
-                <button class="nav-button" @click=${this.navigateToNextResponse} ?disabled=${this.currentResponseIndex >= this.responses.length - 1}>
-                    <?xml version="1.0" encoding="UTF-8"?><svg
-                        width="24px"
-                        height="24px"
-                        stroke-width="1.7"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                        color="#ffffff"
-                    >
-                        <path d="M9 6L15 12L9 18" stroke="#ffffff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path>
+                <button 
+                    class="glass-nav-button" 
+                    @click=${this.navigateToNextResponse} 
+                    ?disabled=${this.currentResponseIndex >= this.responses.length - 1}
+                    title="Next response"
+                >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 6L15 12L9 18"/>
                     </svg>
                 </button>
+            </div>
+
+            <!-- Glass Text Input Container -->
+            <div class="glass-text-input-container">
+                <input 
+                    type="text" 
+                    id="textInput" 
+                    class="glass-text-input"
+                    placeholder="Type a message to the AI..." 
+                    @keydown=${this.handleTextKeydown} 
+                />
             </div>
         `;
     }

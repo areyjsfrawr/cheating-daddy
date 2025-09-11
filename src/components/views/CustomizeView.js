@@ -4,98 +4,406 @@ import { resizeLayout } from '../../utils/windowResize.js';
 export class CustomizeView extends LitElement {
     static styles = css`
         * {
-            font-family:
-                'Inter',
-                -apple-system,
-                BlinkMacSystemFont,
-                sans-serif;
+            font-family: var(--font-primary);
             cursor: default;
             user-select: none;
         }
 
         :host {
             display: block;
-            padding: 12px;
+            padding: var(--space-6);
             margin: 0 auto;
-            max-width: 700px;
+            max-width: 900px;
+            container-type: inline-size;
         }
 
-        .settings-container {
+        .liquid-glass-settings-container {
             display: grid;
-            gap: 12px;
-            padding-bottom: 20px;
+            gap: var(--space-6);
+            padding-bottom: var(--space-8);
+            position: relative;
         }
 
-        .settings-section {
-            background: var(--card-background, rgba(255, 255, 255, 0.04));
-            border: 1px solid var(--card-border, rgba(255, 255, 255, 0.1));
-            border-radius: 6px;
-            padding: 16px;
-            backdrop-filter: blur(10px);
-        }
-
-        .section-title {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 12px;
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-color);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .section-title::before {
+        /* Animated Background Gradient */
+        .liquid-glass-settings-container::before {
             content: '';
-            width: 3px;
-            height: 14px;
-            background: var(--accent-color, #007aff);
-            border-radius: 1.5px;
+            position: absolute;
+            top: -20%;
+            left: -20%;
+            right: -20%;
+            bottom: -20%;
+            background: radial-gradient(circle at 30% 70%, 
+                var(--glass-primary) 0%, 
+                transparent 50%),
+                radial-gradient(circle at 70% 30%, 
+                var(--accent-secondary) 0%, 
+                transparent 50%);
+            opacity: 0.1;
+            animation: settingsBackgroundFlow 8s ease-in-out infinite alternate;
+            pointer-events: none;
+            z-index: 0;
         }
 
-        .form-grid {
-            display: grid;
-            gap: 12px;
+        @keyframes settingsBackgroundFlow {
+            0% { transform: rotate(0deg) scale(1); }
+            100% { transform: rotate(5deg) scale(1.1); }
         }
 
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            align-items: start;
+        .glass-settings-section {
+            position: relative;
+            z-index: 1;
+            
+            /* Glass Morphism */
+            background: var(--glass-primary);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-2xl);
+            padding: var(--space-8);
+            box-shadow: var(--glass-shadow);
+            
+            /* Hover Effects */
+            transition: all var(--duration-normal) var(--ease-glass);
+            transform: translateZ(0);
+            will-change: transform, box-shadow, border-color;
+            
+            /* Entrance Animation */
+            animation: sectionEnter var(--duration-slow) var(--ease-glass) forwards;
         }
 
-        @media (max-width: 600px) {
-            .form-row {
-                grid-template-columns: 1fr;
+        @keyframes sectionEnter {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+                filter: blur(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                filter: blur(0);
             }
         }
 
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
+        .glass-settings-section:hover {
+            transform: translateY(-2px) translateZ(0);
+            box-shadow: var(--glass-shadow-lg);
+            border-color: var(--accent-primary);
         }
 
-        .form-group.full-width {
+        /* Section Accent Border */
+        .glass-settings-section::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                var(--accent-primary) 0%, 
+                var(--accent-secondary) 50%, 
+                var(--accent-tertiary) 100%);
+            border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+            opacity: 0;
+            transition: opacity var(--duration-normal) var(--ease-smooth);
+        }
+
+        .glass-settings-section:hover::after {
+            opacity: 1;
+        }
+
+        .glass-section-title {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            margin-bottom: var(--space-6);
+            font-size: var(--text-lg);
+            font-weight: var(--font-semibold);
+            color: var(--text-primary);
+            
+            /* Gradient Text Effect */
+            background: linear-gradient(135deg, 
+                var(--text-primary) 0%, 
+                var(--accent-primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .glass-section-title::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: linear-gradient(135deg, 
+                var(--accent-primary) 0%, 
+                var(--accent-secondary) 100%);
+            border-radius: var(--radius-full);
+            box-shadow: 0 0 8px var(--accent-primary);
+        }
+
+        .glass-form-grid {
+            display: grid;
+            gap: var(--space-5);
+        }
+
+        .glass-form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-5);
+            align-items: start;
+        }
+
+        .glass-form-group {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-2);
+            position: relative;
+        }
+
+        .glass-form-group.full-width {
             grid-column: 1 / -1;
         }
 
-        .form-label {
-            font-weight: 500;
-            font-size: 12px;
-            color: var(--label-color, rgba(255, 255, 255, 0.9));
+        .glass-form-label {
+            font-weight: var(--font-medium);
+            font-size: var(--text-sm);
+            color: var(--text-primary);
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: var(--space-2);
+            margin-bottom: var(--space-1);
         }
 
-        .form-description {
-            font-size: 11px;
-            color: var(--description-color, rgba(255, 255, 255, 0.5));
-            line-height: 1.3;
-            margin-top: 2px;
+        .glass-form-description {
+            font-size: var(--text-xs);
+            color: var(--text-secondary);
+            line-height: var(--leading-relaxed);
+            margin-top: var(--space-1);
+        }
+
+        /* Glass Form Controls */
+        .glass-input,
+        .glass-select,
+        .glass-textarea {
+            background: var(--glass-secondary);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-3) var(--space-4);
+            
+            color: var(--text-primary);
+            font-family: var(--font-primary);
+            font-size: var(--text-sm);
+            
+            transition: all var(--duration-normal) var(--ease-glass);
+            transform: translateZ(0);
+            will-change: transform, background, border-color, box-shadow;
+        }
+
+        .glass-input:focus,
+        .glass-select:focus,
+        .glass-textarea:focus {
+            outline: none;
+            background: var(--glass-focus);
+            border-color: var(--accent-primary);
+            box-shadow: var(--glass-glow-primary);
+            transform: translateY(-1px) translateZ(0);
+        }
+
+        .glass-input::placeholder,
+        .glass-textarea::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        .glass-textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        /* Glass Range Slider */
+        .glass-range-container {
+            position: relative;
+            padding: var(--space-4) 0;
+        }
+
+        .glass-range {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 6px;
+            background: var(--glass-secondary);
+            border-radius: var(--radius-full);
+            outline: none;
+            cursor: pointer;
+        }
+
+        .glass-range::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, 
+                var(--accent-primary) 0%, 
+                var(--accent-secondary) 100%);
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            box-shadow: var(--glass-glow-primary);
+            transition: all var(--duration-normal) var(--ease-glass);
+        }
+
+        .glass-range::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 20px var(--accent-primary);
+        }
+
+        .glass-range::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, 
+                var(--accent-primary) 0%, 
+                var(--accent-secondary) 100%);
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            border: none;
+            box-shadow: var(--glass-glow-primary);
+            transition: all var(--duration-normal) var(--ease-glass);
+        }
+
+        .glass-range::-moz-range-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 20px var(--accent-primary);
+        }
+
+        .range-value {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--glass-primary);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-1) var(--space-2);
+            font-size: var(--text-xs);
+            color: var(--text-primary);
+            pointer-events: none;
+        }
+
+        /* Glass Toggle Switch */
+        .glass-toggle-container {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+        }
+
+        .glass-toggle {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background: var(--glass-secondary);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            transition: all var(--duration-normal) var(--ease-glass);
+        }
+
+        .glass-toggle::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: var(--text-primary);
+            border-radius: var(--radius-full);
+            transition: all var(--duration-normal) var(--ease-glass);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .glass-toggle.active {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            box-shadow: var(--glass-glow-primary);
+        }
+
+        .glass-toggle.active::before {
+            transform: translateX(24px);
+            background: white;
+        }
+
+        /* Glass Button */
+        .glass-button {
+            background: linear-gradient(135deg, 
+                var(--accent-primary) 0%, 
+                var(--accent-secondary) 100%);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-lg);
+            padding: var(--space-3) var(--space-6);
+            
+            color: white;
+            font-family: var(--font-primary);
+            font-size: var(--text-sm);
+            font-weight: var(--font-medium);
+            
+            cursor: pointer;
+            transition: all var(--duration-normal) var(--ease-glass);
+            transform: translateZ(0);
+            will-change: transform, box-shadow, background;
+        }
+
+        .glass-button:hover {
+            background: linear-gradient(135deg, 
+                var(--accent-primary-light) 0%, 
+                var(--accent-secondary-light) 100%);
+            transform: translateY(-2px) scale(1.02) translateZ(0);
+            box-shadow: var(--glass-glow-primary);
+        }
+
+        .glass-button:active {
+            transform: translateY(0) scale(1.01) translateZ(0);
+        }
+
+        .glass-button.secondary {
+            background: var(--glass-secondary);
+            color: var(--text-primary);
+            border-color: var(--glass-border);
+        }
+
+        .glass-button.secondary:hover {
+            background: var(--glass-hover);
+            border-color: var(--accent-primary);
+        }
+
+        /* Responsive Design */
+        @container (max-width: 768px) {
+            :host {
+                padding: var(--space-4);
+            }
+            
+            .glass-settings-section {
+                padding: var(--space-6);
+            }
+            
+            .glass-form-row {
+                grid-template-columns: 1fr;
+                gap: var(--space-4);
+            }
+        }
+
+        @container (max-width: 480px) {
+            .glass-settings-section {
+                padding: var(--space-4);
+            }
+            
+            .glass-section-title {
+                font-size: var(--text-base);
+            }
+        }
+
+        /* Performance Optimizations */
+        .gpu-accelerated {
+            transform: translateZ(0);
+            will-change: transform, opacity, backdrop-filter;
         }
 
         .form-control {
@@ -864,21 +1172,23 @@ export class CustomizeView extends LitElement {
         const currentLanguage = languages.find(l => l.value === this.selectedLanguage);
 
         return html`
-            <div class="settings-container">
-                <!-- Profile & Behavior Section -->
-                <div class="settings-section">
-                    <div class="section-title">
-                        <span>AI Profile & Behavior</span>
+            <div class="liquid-glass-settings-container gpu-accelerated">
+                <!-- AI Profile & Behavior Section -->
+                <div class="glass-settings-section">
+                    <div class="glass-section-title">
+                        <span>🤖 AI Profile & Behavior</span>
                     </div>
 
-                    <div class="form-grid">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">
+                    <div class="glass-form-grid">
+                        <div class="glass-form-row">
+                            <div class="glass-form-group">
+                                <label class="glass-form-label">
                                     Profile Type
-                                    <span class="current-selection">${currentProfile?.name || 'Unknown'}</span>
+                                    <span style="color: var(--accent-primary); font-weight: var(--font-semibold);">
+                                        ${currentProfile?.name || 'Unknown'}
+                                    </span>
                                 </label>
-                                <select class="form-control" .value=${this.selectedProfile} @change=${this.handleProfileSelect}>
+                                <select class="glass-select" .value=${this.selectedProfile} @change=${this.handleProfileSelect}>
                                     ${profiles.map(
                                         profile => html`
                                             <option value=${profile.value} ?selected=${this.selectedProfile === profile.value}>
@@ -887,13 +1197,16 @@ export class CustomizeView extends LitElement {
                                         `
                                     )}
                                 </select>
+                                <div class="glass-form-description">
+                                    Choose the AI personality that best fits your use case
+                                </div>
                             </div>
                         </div>
 
-                        <div class="form-group full-width">
-                            <label class="form-label">Custom AI Instructions</label>
+                        <div class="glass-form-group full-width">
+                            <label class="glass-form-label">Custom AI Instructions</label>
                             <textarea
-                                class="form-control"
+                                class="glass-textarea"
                                 placeholder="Add specific instructions for how you want the AI to behave during ${
                                     profileNames[this.selectedProfile] || 'this interaction'
                                 }..."
@@ -901,29 +1214,29 @@ export class CustomizeView extends LitElement {
                                 rows="4"
                                 @input=${this.handleCustomPromptInput}
                             ></textarea>
-                            <div class="form-description">
+                            <div class="glass-form-description">
                                 Personalize the AI's behavior with specific instructions that will be added to the
                                 ${profileNames[this.selectedProfile] || 'selected profile'} base prompts
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                </div>
-            </div>
-        </div>
 
                 <!-- Audio & Microphone Section -->
-                <div class="settings-section">
-                    <div class="section-title">
-                        <span>Audio & Microphone</span>
+                <div class="glass-settings-section">
+                    <div class="glass-section-title">
+                        <span>🎤 Audio & Microphone</span>
                     </div>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label class="form-label">Audio Mode</label>
-                            <select class="form-control" .value=${localStorage.getItem('audioMode') || 'speaker_only'} @change=${e => localStorage.setItem('audioMode', e.target.value)}>
-                                <option value="speaker_only">Speaker Only (Interviewer)</option>
-                                <option value="mic_only">Microphone Only (Me)</option>
-                                <option value="both">Both Speaker & Microphone</option>
+                    <div class="glass-form-grid">
+                        <div class="glass-form-group">
+                            <label class="glass-form-label">Audio Mode</label>
+                            <select class="glass-select" .value=${localStorage.getItem('audioMode') || 'speaker_only'} @change=${e => localStorage.setItem('audioMode', e.target.value)}>
+                                <option value="speaker_only">🔊 Speaker Only (Interviewer)</option>
+                                <option value="mic_only">🎙️ Microphone Only (Me)</option>
+                                <option value="both">🔊🎙️ Both Speaker & Microphone</option>
                             </select>
-                            <div class="form-description">
-                                Choose which audio sources to capture for the AI.
+                            <div class="glass-form-description">
+                                Choose which audio sources to capture for the AI analysis
                             </div>
                         </div>
                     </div>

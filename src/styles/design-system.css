@@ -1,0 +1,491 @@
+/* ===================================================================
+   LIQUID GLASS DESIGN SYSTEM 2025
+   Modern glassmorphism design system for Cheating Daddy
+   =================================================================== */
+
+/* CSS Layers for organized architecture */
+@layer reset, design-system, components, utilities, overrides;
+
+@layer design-system {
+  :root {
+    /* ===== GLASS MORPHISM COLOR SYSTEM ===== */
+    
+    /* Base Glass Colors */
+    --glass-primary: rgba(255, 255, 255, 0.08);
+    --glass-secondary: rgba(255, 255, 255, 0.04);
+    --glass-tertiary: rgba(255, 255, 255, 0.02);
+    --glass-quaternary: rgba(255, 255, 255, 0.01);
+    
+    /* Interactive Glass States */
+    --glass-hover: rgba(255, 255, 255, 0.12);
+    --glass-active: rgba(0, 212, 255, 0.15);
+    --glass-focus: rgba(0, 212, 255, 0.25);
+    --glass-disabled: rgba(255, 255, 255, 0.02);
+    
+    /* Contextual Glass Colors */
+    --glass-success: rgba(16, 185, 129, 0.15);
+    --glass-warning: rgba(245, 158, 11, 0.15);
+    --glass-error: rgba(239, 68, 68, 0.15);
+    --glass-info: rgba(59, 130, 246, 0.15);
+    
+    /* ===== ACCENT COLOR PALETTE ===== */
+    
+    /* Primary Accents */
+    --accent-primary: #00D4FF;      /* Cyan Blue */
+    --accent-primary-dark: #0099CC;
+    --accent-primary-light: #33DDFF;
+    
+    /* Secondary Accents */
+    --accent-secondary: #7C3AED;    /* Purple */
+    --accent-secondary-dark: #5B21B6;
+    --accent-secondary-light: #A855F7;
+    
+    /* Tertiary Accents */
+    --accent-tertiary: #F59E0B;     /* Amber */
+    --accent-success: #10B981;      /* Emerald */
+    --accent-warning: #F59E0B;      /* Amber */
+    --accent-error: #EF4444;        /* Red */
+    --accent-info: #3B82F6;         /* Blue */
+    
+    /* ===== TEXT COLOR SYSTEM ===== */
+    
+    --text-primary: rgba(255, 255, 255, 0.95);
+    --text-secondary: rgba(255, 255, 255, 0.75);
+    --text-tertiary: rgba(255, 255, 255, 0.55);
+    --text-quaternary: rgba(255, 255, 255, 0.35);
+    --text-disabled: rgba(255, 255, 255, 0.25);
+    --text-inverse: rgba(0, 0, 0, 0.85);
+    
+    /* ===== BACKGROUND SYSTEM ===== */
+    
+    --bg-primary: rgba(0, 0, 0, 0.85);
+    --bg-secondary: rgba(0, 0, 0, 0.65);
+    --bg-tertiary: rgba(0, 0, 0, 0.45);
+    --bg-quaternary: rgba(0, 0, 0, 0.25);
+    --bg-overlay: rgba(0, 0, 0, 0.15);
+    
+    /* Dynamic Gradient Backgrounds */
+    --bg-gradient-primary: linear-gradient(135deg, 
+      rgba(0, 0, 0, 0.9) 0%, 
+      rgba(26, 26, 46, 0.8) 25%, 
+      rgba(22, 33, 62, 0.7) 50%, 
+      rgba(15, 52, 96, 0.6) 75%, 
+      rgba(0, 0, 0, 0.9) 100%);
+    
+    --bg-gradient-secondary: linear-gradient(45deg, 
+      rgba(0, 212, 255, 0.1) 0%, 
+      rgba(124, 58, 237, 0.1) 50%, 
+      rgba(245, 158, 11, 0.1) 100%);
+    
+    /* ===== GLASS EFFECTS ===== */
+    
+    /* Blur Effects */
+    --glass-blur-subtle: blur(8px);
+    --glass-blur: blur(20px);
+    --glass-blur-strong: blur(40px);
+    --glass-blur-intense: blur(60px);
+    
+    /* Border System */
+    --glass-border: rgba(255, 255, 255, 0.15);
+    --glass-border-strong: rgba(255, 255, 255, 0.25);
+    --glass-border-subtle: rgba(255, 255, 255, 0.08);
+    
+    /* Shadow System */
+    --glass-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    --glass-shadow-lg: 0 16px 64px rgba(0, 0, 0, 0.4);
+    --glass-shadow-xl: 0 24px 96px rgba(0, 0, 0, 0.5);
+    
+    /* Glow Effects */
+    --glass-glow-primary: 0 0 20px rgba(0, 212, 255, 0.3);
+    --glass-glow-secondary: 0 0 20px rgba(124, 58, 237, 0.3);
+    --glass-glow-success: 0 0 20px rgba(16, 185, 129, 0.3);
+    --glass-glow-error: 0 0 20px rgba(239, 68, 68, 0.3);
+    
+    /* ===== FLUID TYPOGRAPHY SYSTEM ===== */
+    
+    /* Font Families */
+    --font-primary: 'Inter Variable', 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    --font-mono: 'SF Mono', 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Monaco', 'Menlo', monospace;
+    --font-display: 'Inter Variable', 'Inter', 'SF Pro Display', sans-serif;
+    
+    /* Fluid Typography Scale */
+    --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);      /* 12-14px */
+    --text-sm: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);        /* 14-16px */
+    --text-base: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);        /* 16-18px */
+    --text-lg: clamp(1.125rem, 1rem + 0.625vw, 1.25rem);       /* 18-20px */
+    --text-xl: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);        /* 20-24px */
+    --text-2xl: clamp(1.5rem, 1.3rem + 1vw, 1.875rem);         /* 24-30px */
+    --text-3xl: clamp(1.875rem, 1.6rem + 1.375vw, 2.25rem);    /* 30-36px */
+    --text-4xl: clamp(2.25rem, 1.9rem + 1.75vw, 3rem);         /* 36-48px */
+    --text-5xl: clamp(3rem, 2.5rem + 2.5vw, 4rem);             /* 48-64px */
+    --text-6xl: clamp(4rem, 3rem + 5vw, 6rem);                 /* 64-96px */
+    
+    /* Font Weights */
+    --font-thin: 100;
+    --font-extralight: 200;
+    --font-light: 300;
+    --font-normal: 400;
+    --font-medium: 500;
+    --font-semibold: 600;
+    --font-bold: 700;
+    --font-extrabold: 800;
+    --font-black: 900;
+    
+    /* Line Heights */
+    --leading-none: 1;
+    --leading-tight: 1.25;
+    --leading-snug: 1.375;
+    --leading-normal: 1.5;
+    --leading-relaxed: 1.625;
+    --leading-loose: 2;
+    
+    /* Letter Spacing */
+    --tracking-tighter: -0.05em;
+    --tracking-tight: -0.025em;
+    --tracking-normal: 0em;
+    --tracking-wide: 0.025em;
+    --tracking-wider: 0.05em;
+    --tracking-widest: 0.1em;
+    
+    /* ===== FLUID SPACING SYSTEM ===== */
+    
+    --space-px: 1px;
+    --space-0: 0;
+    --space-1: clamp(0.25rem, 0.2rem + 0.25vw, 0.375rem);      /* 4-6px */
+    --space-2: clamp(0.5rem, 0.4rem + 0.5vw, 0.75rem);         /* 8-12px */
+    --space-3: clamp(0.75rem, 0.6rem + 0.75vw, 1.125rem);      /* 12-18px */
+    --space-4: clamp(1rem, 0.8rem + 1vw, 1.5rem);              /* 16-24px */
+    --space-5: clamp(1.25rem, 1rem + 1.25vw, 1.875rem);        /* 20-30px */
+    --space-6: clamp(1.5rem, 1.2rem + 1.5vw, 2.25rem);         /* 24-36px */
+    --space-7: clamp(1.75rem, 1.4rem + 1.75vw, 2.625rem);      /* 28-42px */
+    --space-8: clamp(2rem, 1.6rem + 2vw, 3rem);                /* 32-48px */
+    --space-9: clamp(2.25rem, 1.8rem + 2.25vw, 3.375rem);      /* 36-54px */
+    --space-10: clamp(2.5rem, 2rem + 2.5vw, 3.75rem);          /* 40-60px */
+    --space-11: clamp(2.75rem, 2.2rem + 2.75vw, 4.125rem);     /* 44-66px */
+    --space-12: clamp(3rem, 2.4rem + 3vw, 4.5rem);             /* 48-72px */
+    --space-14: clamp(3.5rem, 2.8rem + 3.5vw, 5.25rem);        /* 56-84px */
+    --space-16: clamp(4rem, 3.2rem + 4vw, 6rem);               /* 64-96px */
+    --space-20: clamp(5rem, 4rem + 5vw, 7.5rem);               /* 80-120px */
+    --space-24: clamp(6rem, 4.8rem + 6vw, 9rem);               /* 96-144px */
+    --space-28: clamp(7rem, 5.6rem + 7vw, 10.5rem);            /* 112-168px */
+    --space-32: clamp(8rem, 6.4rem + 8vw, 12rem);              /* 128-192px */
+    
+    /* ===== BORDER RADIUS SYSTEM ===== */
+    
+    --radius-none: 0;
+    --radius-sm: 4px;
+    --radius-base: 6px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --radius-2xl: 20px;
+    --radius-3xl: 24px;
+    --radius-4xl: 32px;
+    --radius-full: 9999px;
+    
+    /* ===== ANIMATION SYSTEM ===== */
+    
+    /* Easing Functions */
+    --ease-linear: linear;
+    --ease-in: cubic-bezier(0.4, 0, 1, 1);
+    --ease-out: cubic-bezier(0, 0, 0.2, 1);
+    --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Custom Glass Easing */
+    --ease-glass: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-sharp: cubic-bezier(0.4, 0, 0.6, 1);
+    --ease-fluid: cubic-bezier(0.2, 0, 0, 1);
+    --ease-elastic: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    
+    /* Duration Scale */
+    --duration-75: 75ms;
+    --duration-100: 100ms;
+    --duration-150: 150ms;
+    --duration-200: 200ms;
+    --duration-300: 300ms;
+    --duration-500: 500ms;
+    --duration-700: 700ms;
+    --duration-1000: 1000ms;
+    
+    /* Semantic Durations */
+    --duration-fast: var(--duration-150);
+    --duration-normal: var(--duration-300);
+    --duration-slow: var(--duration-500);
+    --duration-slower: var(--duration-700);
+    --duration-slowest: var(--duration-1000);
+    
+    /* ===== BREAKPOINTS ===== */
+    
+    --breakpoint-sm: 640px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 1024px;
+    --breakpoint-xl: 1280px;
+    --breakpoint-2xl: 1536px;
+    
+    /* ===== Z-INDEX SCALE ===== */
+    
+    --z-0: 0;
+    --z-10: 10;
+    --z-20: 20;
+    --z-30: 30;
+    --z-40: 40;
+    --z-50: 50;
+    --z-auto: auto;
+    
+    /* Semantic Z-Index */
+    --z-dropdown: 1000;
+    --z-sticky: 1020;
+    --z-fixed: 1030;
+    --z-modal-backdrop: 1040;
+    --z-modal: 1050;
+    --z-popover: 1060;
+    --z-tooltip: 1070;
+    --z-toast: 1080;
+    
+    /* ===== LAYOUT VARIANTS ===== */
+    
+    /* Normal Layout */
+    --header-padding: var(--space-3) var(--space-5);
+    --header-font-size: var(--text-base);
+    --header-gap: var(--space-3);
+    --header-button-padding: var(--space-2) var(--space-4);
+    --header-icon-padding: var(--space-2);
+    --main-content-padding: var(--space-5);
+    --main-content-margin-top: var(--space-3);
+    --icon-size: 24px;
+    --border-radius: var(--radius-lg);
+    --content-border-radius: var(--radius-lg);
+  }
+  
+  /* Compact Layout Overrides */
+  :root.compact-layout {
+    --header-padding: var(--space-2) var(--space-3);
+    --header-font-size: var(--text-sm);
+    --header-gap: var(--space-2);
+    --header-button-padding: var(--space-1) var(--space-2);
+    --header-icon-padding: var(--space-1);
+    --main-content-padding: var(--space-3);
+    --main-content-margin-top: var(--space-1);
+    --icon-size: 20px;
+    --border-radius: var(--radius-md);
+    --content-border-radius: var(--radius-md);
+  }
+  
+  /* ===== ACCESSIBILITY & PREFERENCES ===== */
+  
+  /* Reduced Motion Support */
+  @media (prefers-reduced-motion: reduce) {
+    :root {
+      --duration-fast: 0.01ms;
+      --duration-normal: 0.01ms;
+      --duration-slow: 0.01ms;
+      --duration-slower: 0.01ms;
+      --duration-slowest: 0.01ms;
+    }
+    
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+  
+  /* High Contrast Support */
+  @media (prefers-contrast: high) {
+    :root {
+      --glass-border: rgba(255, 255, 255, 0.4);
+      --glass-border-strong: rgba(255, 255, 255, 0.6);
+      --text-secondary: rgba(255, 255, 255, 0.9);
+      --text-tertiary: rgba(255, 255, 255, 0.8);
+    }
+  }
+}
+
+/* ===== BASE RESET & FOUNDATION ===== */
+@layer reset {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  html {
+    font-family: var(--font-primary);
+    line-height: var(--leading-normal);
+    -webkit-text-size-adjust: 100%;
+    -moz-tab-size: 4;
+    tab-size: 4;
+  }
+  
+  body {
+    font-family: inherit;
+    line-height: inherit;
+    color: var(--text-primary);
+    background: transparent;
+    font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  
+  /* Scrollbar Styling */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: var(--glass-border);
+    border-radius: var(--radius-full);
+    transition: background var(--duration-normal) var(--ease-smooth);
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-primary);
+  }
+  
+  /* Selection Styling */
+  ::selection {
+    background: var(--glass-active);
+    color: var(--text-primary);
+  }
+  
+  ::-moz-selection {
+    background: var(--glass-active);
+    color: var(--text-primary);
+  }
+}
+
+/* ===== UTILITY CLASSES ===== */
+@layer utilities {
+  /* Glass Morphism Utilities */
+  .glass-primary {
+    background: var(--glass-primary);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+  }
+  
+  .glass-secondary {
+    background: var(--glass-secondary);
+    backdrop-filter: var(--glass-blur-subtle);
+    border: 1px solid var(--glass-border-subtle);
+  }
+  
+  .glass-strong {
+    background: var(--glass-primary);
+    backdrop-filter: var(--glass-blur-strong);
+    border: 1px solid var(--glass-border-strong);
+  }
+  
+  /* Animation Utilities */
+  .animate-fade-in {
+    animation: fadeIn var(--duration-normal) var(--ease-glass) forwards;
+  }
+  
+  .animate-slide-up {
+    animation: slideUp var(--duration-normal) var(--ease-glass) forwards;
+  }
+  
+  .animate-scale-in {
+    animation: scaleIn var(--duration-normal) var(--ease-bounce) forwards;
+  }
+  
+  /* GPU Acceleration */
+  .gpu-accelerated {
+    transform: translateZ(0);
+    will-change: transform, opacity, backdrop-filter;
+  }
+  
+  /* Text Utilities */
+  .text-gradient-primary {
+    background: linear-gradient(135deg, 
+      var(--text-primary) 0%, 
+      var(--accent-primary) 50%, 
+      var(--accent-secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .text-gradient-animated {
+    background-size: 200% 200%;
+    animation: gradientShift 3s ease-in-out infinite alternate;
+  }
+}
+
+/* ===== KEYFRAME ANIMATIONS ===== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(-25%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: none;
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}

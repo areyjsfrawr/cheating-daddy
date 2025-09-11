@@ -3,13 +3,7 @@ import { html, css, LitElement } from '../../assets/lit-core-2.7.4.min.js';
 export class OnboardingView extends LitElement {
     static styles = css`
         * {
-            font-family:
-                'Inter',
-                -apple-system,
-                BlinkMacSystemFont,
-                'Segoe UI',
-                Roboto,
-                sans-serif;
+            font-family: var(--font-primary);
             cursor: default;
             user-select: none;
             margin: 0;
@@ -25,33 +19,389 @@ export class OnboardingView extends LitElement {
             top: 0;
             left: 0;
             overflow: hidden;
+            z-index: 1000;
         }
 
-        .onboarding-container {
+        .liquid-glass-onboarding-container {
             position: relative;
             width: 100%;
             height: 100%;
-            background: #0a0a0a;
+            background: var(--background-primary);
             overflow: hidden;
+            
+            /* Animated Background */
+            background-image: 
+                radial-gradient(circle at 20% 80%, var(--accent-primary) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, var(--accent-secondary) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, var(--accent-tertiary) 0%, transparent 50%);
+            background-size: 100% 100%, 100% 100%, 100% 100%;
+            animation: onboardingBackgroundFlow 12s ease-in-out infinite alternate;
         }
 
-        .gradient-canvas {
+        @keyframes onboardingBackgroundFlow {
+            0% { 
+                background-position: 0% 0%, 100% 100%, 50% 50%;
+                filter: hue-rotate(0deg);
+            }
+            50% { 
+                background-position: 100% 100%, 0% 0%, 25% 75%;
+                filter: hue-rotate(30deg);
+            }
+            100% { 
+                background-position: 50% 50%, 50% 50%, 75% 25%;
+                filter: hue-rotate(0deg);
+            }
+        }
+
+        /* Floating Particles */
+        .floating-particles {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 0;
+            pointer-events: none;
+            z-index: 1;
         }
 
-        .content-wrapper {
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--accent-primary);
+            border-radius: var(--radius-full);
+            opacity: 0.6;
+            animation: particleFloat 8s ease-in-out infinite;
+        }
+
+        .particle:nth-child(2n) {
+            background: var(--accent-secondary);
+            animation-delay: -2s;
+            animation-duration: 10s;
+        }
+
+        .particle:nth-child(3n) {
+            background: var(--accent-tertiary);
+            animation-delay: -4s;
+            animation-duration: 12s;
+        }
+
+        @keyframes particleFloat {
+            0%, 100% { 
+                transform: translateY(0) translateX(0) scale(1);
+                opacity: 0.6;
+            }
+            25% { 
+                transform: translateY(-20px) translateX(10px) scale(1.2);
+                opacity: 1;
+            }
+            50% { 
+                transform: translateY(-40px) translateX(-5px) scale(0.8);
+                opacity: 0.4;
+            }
+            75% { 
+                transform: translateY(-20px) translateX(-10px) scale(1.1);
+                opacity: 0.8;
+            }
+        }
+
+        .glass-content-wrapper {
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 60px;
-            z-index: 1;
+            z-index: 2;
             display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-8);
+        }
+
+        /* Glass Slide Container */
+        .glass-slide-container {
+            position: relative;
+            max-width: 800px;
+            width: 100%;
+            
+            /* Glass Morphism */
+            background: var(--glass-primary);
+            backdrop-filter: var(--glass-blur-strong);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-3xl);
+            padding: var(--space-12);
+            box-shadow: var(--glass-shadow-xl);
+            
+            /* Entrance Animation */
+            animation: slideEnter var(--duration-slow) var(--ease-glass) forwards;
+            transform: translateZ(0);
+            will-change: transform, opacity, backdrop-filter;
+        }
+
+        @keyframes slideEnter {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.9);
+                filter: blur(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                filter: blur(0);
+            }
+        }
+
+        /* Slide Content */
+        .glass-slide {
+            text-align: center;
+            position: relative;
+        }
+
+        .slide-icon {
+            font-size: var(--text-8xl);
+            margin-bottom: var(--space-6);
+            
+            /* Gradient Icon */
+            background: linear-gradient(135deg, 
+                var(--accent-primary) 0%, 
+                var(--accent-secondary) 50%, 
+                var(--accent-tertiary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            
+            animation: iconPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes iconPulse {
+            0%, 100% { 
+                transform: scale(1);
+                filter: drop-shadow(0 0 20px var(--accent-primary));
+            }
+            50% { 
+                transform: scale(1.1);
+                filter: drop-shadow(0 0 40px var(--accent-secondary));
+            }
+        }
+
+        .slide-title {
+            font-size: var(--text-4xl);
+            font-weight: var(--font-bold);
+            margin-bottom: var(--space-4);
+            
+            /* Animated Gradient Text */
+            background: linear-gradient(135deg, 
+                var(--text-primary) 0%, 
+                var(--accent-primary) 25%, 
+                var(--accent-secondary) 50%, 
+                var(--accent-tertiary) 75%, 
+                var(--text-primary) 100%);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientFlow 4s ease-in-out infinite;
+        }
+
+        @keyframes gradientFlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .slide-description {
+            font-size: var(--text-lg);
+            color: var(--text-secondary);
+            line-height: var(--leading-relaxed);
+            margin-bottom: var(--space-8);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Glass Progress Indicator */
+        .glass-progress-container {
+            position: absolute;
+            bottom: var(--space-6);
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+            
+            /* Glass Container */
+            background: var(--glass-secondary);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-2xl);
+            padding: var(--space-4) var(--space-6);
+            box-shadow: var(--glass-shadow);
+        }
+
+        .progress-dots {
+            display: flex;
+            gap: var(--space-2);
+        }
+
+        .progress-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: var(--radius-full);
+            background: var(--glass-border);
+            transition: all var(--duration-normal) var(--ease-glass);
+            cursor: pointer;
+        }
+
+        .progress-dot.active {
+            background: linear-gradient(135deg, 
+                var(--accent-primary) 0%, 
+                var(--accent-secondary) 100%);
+            box-shadow: var(--glass-glow-primary);
+            transform: scale(1.2);
+        }
+
+        .progress-dot:hover {
+            background: var(--accent-primary);
+            transform: scale(1.1);
+        }
+
+        /* Glass Navigation Buttons */
+        .glass-nav-buttons {
+            display: flex;
+            gap: var(--space-4);
+        }
+
+        .glass-nav-button {
+            /* Circular Glass Button */
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-full);
+            background: var(--glass-primary);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            
+            transition: all var(--duration-normal) var(--ease-glass);
+            transform: translateZ(0);
+            will-change: transform, background, border-color, box-shadow;
+        }
+
+        .glass-nav-button:hover {
+            background: var(--glass-hover);
+            border-color: var(--accent-primary);
+            box-shadow: var(--glass-glow-primary);
+            transform: translateY(-2px) scale(1.05) translateZ(0);
+        }
+
+        .glass-nav-button:active {
+            transform: translateY(0) scale(1.02) translateZ(0);
+        }
+
+        .glass-nav-button:disabled {
+            background: var(--glass-disabled);
+            border-color: var(--glass-border-subtle);
+            color: var(--text-disabled);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .glass-nav-button.primary {
+            background: linear-gradient(135deg, 
+                var(--accent-primary) 0%, 
+                var(--accent-secondary) 100%);
+            color: white;
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .glass-nav-button.primary:hover {
+            background: linear-gradient(135deg, 
+                var(--accent-primary-light) 0%, 
+                var(--accent-secondary-light) 100%);
+            box-shadow: 0 8px 32px rgba(0, 212, 255, 0.4);
+        }
+
+        /* Skip Button */
+        .glass-skip-button {
+            position: absolute;
+            top: var(--space-6);
+            right: var(--space-6);
+            z-index: 4;
+            
+            background: var(--glass-secondary);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-2) var(--space-4);
+            
+            color: var(--text-secondary);
+            font-family: var(--font-primary);
+            font-size: var(--text-sm);
+            font-weight: var(--font-medium);
+            
+            cursor: pointer;
+            transition: all var(--duration-normal) var(--ease-glass);
+        }
+
+        .glass-skip-button:hover {
+            background: var(--glass-hover);
+            border-color: var(--accent-primary);
+            color: var(--text-primary);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .glass-content-wrapper {
+                padding: var(--space-4);
+            }
+            
+            .glass-slide-container {
+                padding: var(--space-8);
+            }
+            
+            .slide-icon {
+                font-size: var(--text-6xl);
+            }
+            
+            .slide-title {
+                font-size: var(--text-3xl);
+            }
+            
+            .slide-description {
+                font-size: var(--text-base);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .glass-slide-container {
+                padding: var(--space-6);
+            }
+            
+            .slide-icon {
+                font-size: var(--text-5xl);
+            }
+            
+            .slide-title {
+                font-size: var(--text-2xl);
+            }
+            
+            .glass-progress-container {
+                bottom: var(--space-4);
+                padding: var(--space-3) var(--space-4);
+            }
+        }
+
+        /* Performance Optimizations */
+        .gpu-accelerated {
+            transform: translateZ(0);
+            will-change: transform, opacity, backdrop-filter;
+        }
             flex-direction: column;
             justify-content: center;
             padding: 32px 48px;
@@ -473,48 +823,102 @@ export class OnboardingView extends LitElement {
         const slide = this.getSlideContent();
 
         return html`
-            <div class="onboarding-container">
-                <canvas class="gradient-canvas"></canvas>
-
-                <div class="content-wrapper">
-                    <img class="slide-icon" src="${slide.icon}" alt="${slide.title} icon" />
-                    <div class="slide-title">${slide.title}</div>
-                    <div class="slide-content">${slide.content}</div>
-
-                    ${slide.showTextarea
-                        ? html`
-                              <textarea
-                                  class="context-textarea"
-                                  placeholder="Paste your resume, job description, or any relevant context here..."
-                                  .value=${this.contextText}
-                                  @input=${this.handleContextInput}
-                              ></textarea>
-                          `
-                        : ''}
-                    ${slide.showFeatures
-                        ? html`
-                              <div class="feature-list">
-                                  <div class="feature-item">
-                                      <span class="feature-icon">🎨</span>
-                                      Customize AI behavior and responses
-                                  </div>
-                                  <div class="feature-item">
-                                      <span class="feature-icon">📚</span>
-                                      Review conversation history
-                                  </div>
-                                  <div class="feature-item">
-                                      <span class="feature-icon">🔧</span>
-                                      Adjust capture settings and intervals
-                                  </div>
-                              </div>
-                          `
-                        : ''}
+            <div class="liquid-glass-onboarding-container gpu-accelerated">
+                <!-- Floating Particles -->
+                <div class="floating-particles">
+                    ${Array.from({ length: 20 }, (_, i) => html`
+                        <div class="particle" style="
+                            left: ${Math.random() * 100}%; 
+                            top: ${Math.random() * 100}%;
+                            animation-delay: ${Math.random() * 8}s;
+                        "></div>
+                    `)}
                 </div>
 
-                <div class="navigation">
-                    <button class="nav-button" @click=${this.prevSlide} ?disabled=${this.currentSlide === 0}>
-                        <svg width="16px" height="16px" stroke-width="2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M15 6L9 12L15 18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
+                <!-- Skip Button -->
+                <button class="glass-skip-button" @click=${this.handleSkip}>
+                    Skip Tutorial
+                </button>
+
+                <!-- Main Content -->
+                <div class="glass-content-wrapper">
+                    <div class="glass-slide-container">
+                        <div class="glass-slide">
+                            <div class="slide-icon">${slide.icon}</div>
+                            <h1 class="slide-title">${slide.title}</h1>
+                            <p class="slide-description">${slide.content}</p>
+
+                            ${slide.showTextarea ? html`
+                                <textarea
+                                    class="glass-textarea"
+                                    placeholder="Paste your resume, job description, or any relevant context here..."
+                                    .value=${this.contextText}
+                                    @input=${this.handleContextInput}
+                                    rows="6"
+                                    style="width: 100%; margin-bottom: var(--space-6);"
+                                ></textarea>
+                            ` : ''}
+
+                            ${slide.showFeatures ? html`
+                                <div class="feature-list" style="
+                                    display: grid; 
+                                    gap: var(--space-4); 
+                                    margin-bottom: var(--space-6);
+                                    text-align: left;
+                                ">
+                                    <div class="glass-feature-item" style="
+                                        display: flex; 
+                                        align-items: center; 
+                                        gap: var(--space-3);
+                                        padding: var(--space-4);
+                                        background: var(--glass-secondary);
+                                        border: 1px solid var(--glass-border);
+                                        border-radius: var(--radius-lg);
+                                    ">
+                                        <span style="font-size: var(--text-2xl);">🎨</span>
+                                        <span style="color: var(--text-primary);">Customize AI behavior and responses</span>
+                                    </div>
+                                    <div class="glass-feature-item" style="
+                                        display: flex; 
+                                        align-items: center; 
+                                        gap: var(--space-3);
+                                        padding: var(--space-4);
+                                        background: var(--glass-secondary);
+                                        border: 1px solid var(--glass-border);
+                                        border-radius: var(--radius-lg);
+                                    ">
+                                        <span style="font-size: var(--text-2xl);">📚</span>
+                                        <span style="color: var(--text-primary);">Review conversation history</span>
+                                    </div>
+                                    <div class="glass-feature-item" style="
+                                        display: flex; 
+                                        align-items: center; 
+                                        gap: var(--space-3);
+                                        padding: var(--space-4);
+                                        background: var(--glass-secondary);
+                                        border: 1px solid var(--glass-border);
+                                        border-radius: var(--radius-lg);
+                                    ">
+                                        <span style="font-size: var(--text-2xl);">🔧</span>
+                                        <span style="color: var(--text-primary);">Adjust capture settings and intervals</span>
+                                    </div>
+                                </div>
+                            `
+                        : ''}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Glass Progress and Navigation -->
+                <div class="glass-progress-container">
+                    <button 
+                        class="glass-nav-button" 
+                        @click=${this.prevSlide} 
+                        ?disabled=${this.currentSlide === 0}
+                        title="Previous slide"
+                    >
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M15 6L9 12L15 18"/>
                         </svg>
                     </button>
 
@@ -522,25 +926,32 @@ export class OnboardingView extends LitElement {
                         ${[0, 1, 2, 3, 4].map(
                             index => html`
                                 <div
-                                    class="dot ${index === this.currentSlide ? 'active' : ''}"
+                                    class="progress-dot ${index === this.currentSlide ? 'active' : ''}"
                                     @click=${() => {
                                         if (index !== this.currentSlide) {
                                             this.startColorTransition(index);
                                         }
                                     }}
+                                    title="Go to slide ${index + 1}"
                                 ></div>
                             `
                         )}
                     </div>
 
-                    <button class="nav-button" @click=${this.nextSlide}>
-                        ${this.currentSlide === 4
-                            ? 'Get Started'
-                            : html`
-                                  <svg width="16px" height="16px" stroke-width="2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                      <path d="M9 6L15 12L9 18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
-                                  </svg>
-                              `}
+                    <button 
+                        class="glass-nav-button ${this.currentSlide === 4 ? 'primary' : ''}" 
+                        @click=${this.nextSlide}
+                        title="${this.currentSlide === 4 ? 'Complete onboarding' : 'Next slide'}"
+                    >
+                        ${this.currentSlide === 4 ? html`
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 6L9 17L4 12"/>
+                            </svg>
+                        ` : html`
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 6L15 12L9 18"/>
+                            </svg>
+                        `}
                     </button>
                 </div>
             </div>

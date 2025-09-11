@@ -4,134 +4,9 @@ import { resizeLayout } from '../../utils/windowResize.js';
 export class MainView extends LitElement {
     static styles = css`
         * {
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-primary);
             cursor: default;
             user-select: none;
-        }
-
-        .welcome {
-            font-size: 24px;
-            margin-bottom: 8px;
-            font-weight: 600;
-            margin-top: auto;
-        }
-
-        .input-group {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .input-group input {
-            flex: 1;
-        }
-
-        input {
-            background: var(--input-background);
-            color: var(--text-color);
-            border: 1px solid var(--button-border);
-            padding: 10px 14px;
-            width: 100%;
-            border-radius: 8px;
-            font-size: 14px;
-            transition: border-color 0.2s ease;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: var(--focus-border-color);
-            box-shadow: 0 0 0 3px var(--focus-box-shadow);
-            background: var(--input-focus-background);
-        }
-
-        input::placeholder {
-            color: var(--placeholder-color);
-        }
-
-        /* Red blink animation for empty API key */
-        input.api-key-error {
-            animation: blink-red 1s ease-in-out;
-            border-color: #ff4444;
-        }
-
-        @keyframes blink-red {
-            0%,
-            100% {
-                border-color: var(--button-border);
-                background: var(--input-background);
-            }
-            25%,
-            75% {
-                border-color: #ff4444;
-                background: rgba(255, 68, 68, 0.1);
-            }
-            50% {
-                border-color: #ff6666;
-                background: rgba(255, 68, 68, 0.15);
-            }
-        }
-
-        .start-button {
-            background: var(--start-button-background);
-            color: var(--start-button-color);
-            border: 1px solid var(--start-button-border);
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 500;
-            white-space: nowrap;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .start-button:hover {
-            background: var(--start-button-hover-background);
-            border-color: var(--start-button-hover-border);
-        }
-
-        .start-button.initializing {
-            opacity: 0.5;
-        }
-
-        .start-button.initializing:hover {
-            background: var(--start-button-background);
-            border-color: var(--start-button-border);
-        }
-
-        .shortcut-icons {
-            display: flex;
-            align-items: center;
-            gap: 2px;
-            margin-left: 4px;
-        }
-
-        .shortcut-icons svg {
-            width: 14px;
-            height: 14px;
-        }
-
-        .shortcut-icons svg path {
-            stroke: currentColor;
-        }
-
-        .description {
-            color: var(--description-color);
-            font-size: 14px;
-            margin-bottom: 24px;
-            line-height: 1.5;
-        }
-
-        .link {
-            color: var(--link-color);
-            text-decoration: underline;
-            cursor: pointer;
-        }
-
-        .shortcut-hint {
-            color: var(--description-color);
-            font-size: 11px;
-            opacity: 0.8;
         }
 
         :host {
@@ -139,7 +14,369 @@ export class MainView extends LitElement {
             display: flex;
             flex-direction: column;
             width: 100%;
-            max-width: 500px;
+            max-width: 600px;
+            margin: 0 auto;
+            container-type: inline-size;
+        }
+
+        .liquid-glass-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+            padding: var(--space-6);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Animated Background Gradient */
+        .liquid-glass-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, 
+                var(--glass-primary) 0%, 
+                transparent 70%);
+            opacity: 0.3;
+            animation: breathe 4s ease-in-out infinite alternate;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes breathe {
+            0% { transform: scale(1); opacity: 0.3; }
+            100% { transform: scale(1.1); opacity: 0.1; }
+        }
+
+        .welcome-section {
+            position: relative;
+            z-index: 1;
+            margin-bottom: var(--space-8);
+            padding: var(--space-8) var(--space-6);
+            background: var(--glass-primary);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-2xl);
+            box-shadow: var(--glass-shadow);
+            
+            /* Entrance Animation */
+            animation: welcomeEnter var(--duration-slow) var(--ease-glass) forwards;
+        }
+
+        @keyframes welcomeEnter {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+                filter: blur(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                filter: blur(0);
+            }
+        }
+
+        .welcome-title {
+            font-size: var(--text-4xl);
+            font-weight: var(--font-bold);
+            margin-bottom: var(--space-4);
+            
+            /* Animated Gradient Text */
+            background: linear-gradient(135deg, 
+                var(--text-primary) 0%, 
+                var(--accent-primary) 25%, 
+                var(--accent-secondary) 50%, 
+                var(--accent-tertiary) 75%, 
+                var(--text-primary) 100%);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientFlow 4s ease-in-out infinite;
+            
+            /* Text Shadow for Depth */
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+        }
+
+        @keyframes gradientFlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .welcome-subtitle {
+            font-size: var(--text-lg);
+            color: var(--text-secondary);
+            margin-bottom: var(--space-6);
+            line-height: var(--leading-relaxed);
+            font-weight: var(--font-medium);
+            
+            /* Subtle Animation */
+            animation: subtitleFade var(--duration-slow) var(--ease-glass) forwards;
+            animation-delay: 0.3s;
+            opacity: 0;
+        }
+
+        @keyframes subtitleFade {
+            to { opacity: 1; }
+        }
+
+        .api-section {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            margin-bottom: var(--space-8);
+            
+            /* Glass Container */
+            background: var(--glass-primary);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-xl);
+            padding: var(--space-6);
+            box-shadow: var(--glass-shadow);
+            
+            /* Entrance Animation */
+            animation: apiSectionEnter var(--duration-slow) var(--ease-glass) forwards;
+            animation-delay: 0.6s;
+            opacity: 0;
+        }
+
+        @keyframes apiSectionEnter {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .input-group {
+            display: flex;
+            gap: var(--space-3);
+            margin-bottom: var(--space-5);
+        }
+
+        .input-group .glass-api-input {
+            flex: 1;
+        }
+
+        .glass-api-input {
+            width: 100%;
+            background: var(--glass-secondary);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-4) var(--space-5);
+            
+            color: var(--text-primary);
+            font-family: var(--font-primary);
+            font-size: var(--text-base);
+            line-height: var(--leading-normal);
+            
+            transition: all var(--duration-normal) var(--ease-glass);
+            transform: translateZ(0);
+            will-change: transform, background, border-color, box-shadow;
+        }
+
+        .glass-api-input::placeholder {
+            color: var(--text-tertiary);
+            transition: color var(--duration-normal) var(--ease-smooth);
+        }
+
+        .glass-api-input:focus {
+            outline: none;
+            background: var(--glass-focus);
+            border-color: var(--accent-primary);
+            box-shadow: 
+                var(--glass-glow-primary),
+                0 0 0 3px rgba(0, 212, 255, 0.1);
+            transform: translateY(-2px) translateZ(0);
+        }
+
+        .glass-api-input:focus::placeholder {
+            color: var(--text-disabled);
+        }
+
+        /* Error State Animation */
+        .glass-api-input.api-key-error {
+            background: var(--glass-error);
+            border-color: var(--accent-error);
+            animation: shake var(--duration-normal) var(--ease-bounce);
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
+            20%, 40%, 60%, 80% { transform: translateX(3px); }
+        }
+
+        .hero-start-button {
+            /* Hero Glass Button */
+            position: relative;
+            width: 100%;
+            background: linear-gradient(135deg, 
+                var(--accent-primary) 0%, 
+                var(--accent-secondary) 100%);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-xl);
+            padding: var(--space-5) var(--space-8);
+            
+            color: white;
+            font-family: var(--font-primary);
+            font-size: var(--text-lg);
+            font-weight: var(--font-semibold);
+            
+            cursor: pointer;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-2);
+            
+            /* Advanced Effects */
+            box-shadow: 
+                var(--glass-glow-primary),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            
+            transition: all var(--duration-normal) var(--ease-glass);
+            transform: translateZ(0);
+            will-change: transform, box-shadow, background;
+        }
+
+        /* Hero Button Shimmer Effect */
+        .hero-start-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.1) 0%, 
+                transparent 50%, 
+                rgba(255, 255, 255, 0.1) 100%);
+            opacity: 0;
+            transition: opacity var(--duration-normal) var(--ease-smooth);
+        }
+
+        .hero-start-button:hover {
+            background: linear-gradient(135deg, 
+                var(--accent-primary-light) 0%, 
+                var(--accent-secondary-light) 100%);
+            transform: translateY(-3px) scale(1.02) translateZ(0);
+            box-shadow: 
+                0 12px 48px rgba(0, 212, 255, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .hero-start-button:hover::before {
+            opacity: 1;
+        }
+
+        .hero-start-button:active {
+            transform: translateY(-1px) scale(1.01) translateZ(0);
+        }
+
+        .hero-start-button.initializing {
+            background: var(--glass-disabled);
+            border-color: var(--glass-border-subtle);
+            color: var(--text-disabled);
+            cursor: wait;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .hero-start-button.initializing::before {
+            display: none;
+        }
+
+        .shortcut-icons {
+            display: flex;
+            align-items: center;
+            gap: var(--space-1);
+        }
+
+        .shortcut-icons svg {
+            width: 16px;
+            height: 16px;
+            opacity: 0.8;
+        }
+
+        .shortcut-icons svg path {
+            stroke: currentColor;
+        }
+
+        .description {
+            color: var(--text-secondary);
+            font-size: var(--text-sm);
+            margin-bottom: var(--space-6);
+            line-height: var(--leading-relaxed);
+            font-weight: var(--font-normal);
+        }
+
+        .glass-link {
+            color: var(--accent-primary);
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: var(--font-medium);
+            transition: color var(--duration-fast) var(--ease-smooth);
+        }
+
+        .glass-link:hover {
+            color: var(--accent-primary-light);
+            text-decoration: underline;
+        }
+
+        .shortcut-hint {
+            color: var(--text-tertiary);
+            font-size: var(--text-xs);
+            opacity: 0.8;
+            font-weight: var(--font-normal);
+            margin-top: var(--space-2);
+        }
+
+        /* Responsive Design */
+        @container (max-width: 480px) {
+            .liquid-glass-container {
+                padding: var(--space-4);
+            }
+            
+            .welcome-section {
+                padding: var(--space-6) var(--space-4);
+                margin-bottom: var(--space-6);
+            }
+            
+            .welcome-title {
+                font-size: var(--text-3xl);
+            }
+            
+            .welcome-subtitle {
+                font-size: var(--text-base);
+            }
+            
+            .api-section {
+                padding: var(--space-4);
+                margin-bottom: var(--space-6);
+            }
+            
+            .input-group {
+                flex-direction: column;
+                gap: var(--space-2);
+            }
+            
+            .hero-start-button {
+                padding: var(--space-4) var(--space-6);
+                font-size: var(--text-base);
+            }
+        }
+
+        /* Performance Optimizations */
+        .gpu-accelerated {
+            transform: translateZ(0);
+            will-change: transform, opacity, backdrop-filter;
         }
     `;
 
@@ -283,24 +520,43 @@ export class MainView extends LitElement {
 
     render() {
         return html`
-            <div class="welcome">Welcome</div>
+            <div class="liquid-glass-container gpu-accelerated">
+                <!-- Welcome Section -->
+                <div class="welcome-section">
+                    <h1 class="welcome-title">Cheating Daddy</h1>
+                    <p class="welcome-subtitle">
+                        Your AI-powered assistant for real-time video calls and interviews
+                    </p>
+                </div>
 
-            <div class="input-group">
-                <input
-                    type="password"
-                    placeholder="Enter your Gemini API Key"
-                    .value=${localStorage.getItem('apiKey') || ''}
-                    @input=${this.handleInput}
-                    class="${this.showApiKeyError ? 'api-key-error' : ''}"
-                />
-                <button @click=${this.handleStartClick} class="start-button ${this.isInitializing ? 'initializing' : ''}">
-                    ${this.getStartButtonText()}
-                </button>
+                <!-- API Configuration Section -->
+                <div class="api-section">
+                    <div class="input-group">
+                        <input
+                            type="password"
+                            placeholder="Enter your Gemini API Key"
+                            .value=${localStorage.getItem('apiKey') || ''}
+                            @input=${this.handleInput}
+                            class="glass-api-input ${this.showApiKeyError ? 'api-key-error' : ''}"
+                        />
+                        <button 
+                            @click=${this.handleStartClick} 
+                            class="hero-start-button ${this.isInitializing ? 'initializing' : ''}"
+                        >
+                            ${this.getStartButtonText()}
+                        </button>
+                    </div>
+                    
+                    <p class="description">
+                        Don't have an API key? 
+                        <span @click=${this.handleAPIKeyHelpClick} class="glass-link">Get one here</span>
+                    </p>
+                    
+                    <div class="shortcut-hint">
+                        Press ${navigator.platform.toUpperCase().indexOf('MAC') >= 0 ? 'Cmd' : 'Ctrl'} + Enter to start quickly
+                    </div>
+                </div>
             </div>
-            <p class="description">
-                dont have an api key?
-                <span @click=${this.handleAPIKeyHelpClick} class="link">get one here</span>
-            </p>
         `;
     }
 }

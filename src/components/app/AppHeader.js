@@ -3,26 +3,57 @@ import { html, css, LitElement } from '../../assets/lit-core-2.7.4.min.js';
 export class AppHeader extends LitElement {
     static styles = css`
         * {
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-primary);
             cursor: default;
             user-select: none;
         }
 
-        .header {
+        .glass-header {
+            /* Glass Header Container */
             -webkit-app-region: drag;
             display: flex;
             align-items: center;
             padding: var(--header-padding);
-            border: 1px solid var(--border-color);
-            background: var(--header-background);
+            
+            /* Glass Morphism */
+            background: var(--glass-primary);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
             border-radius: var(--border-radius);
+            box-shadow: var(--glass-shadow-sm);
+            
+            /* Dynamic Blur Effect */
+            transition: 
+                backdrop-filter var(--duration-normal) var(--ease-smooth),
+                background var(--duration-normal) var(--ease-smooth),
+                box-shadow var(--duration-normal) var(--ease-smooth);
+            
+            /* GPU Acceleration */
+            transform: translateZ(0);
+            will-change: backdrop-filter, background;
+        }
+
+        .glass-header.scrolled {
+            backdrop-filter: var(--glass-blur-strong);
+            background: var(--glass-secondary);
+            box-shadow: var(--glass-shadow);
         }
 
         .header-title {
             flex: 1;
             font-size: var(--header-font-size);
-            font-weight: 600;
+            font-weight: var(--font-semibold);
+            color: var(--text-primary);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
             -webkit-app-region: drag;
+            
+            /* Gradient Text Effect */
+            background: linear-gradient(135deg, 
+                var(--text-primary) 0%, 
+                var(--accent-primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .header-actions {
@@ -34,57 +65,195 @@ export class AppHeader extends LitElement {
 
         .header-actions span {
             font-size: var(--header-font-size-small);
-            color: var(--header-actions-color);
+            color: var(--text-secondary);
+            font-weight: var(--font-medium);
         }
 
-        .button {
-            background: var(--button-background);
-            color: var(--text-color);
-            border: 1px solid var(--button-border);
+        /* Glass Button Styles */
+        .glass-button {
+            /* Base Glass Button */
+            position: relative;
+            background: var(--glass-primary);
+            backdrop-filter: var(--glass-blur-subtle);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
             padding: var(--header-button-padding);
-            border-radius: 8px;
+            
+            color: var(--text-primary);
             font-size: var(--header-font-size-small);
-            font-weight: 500;
+            font-weight: var(--font-medium);
+            
+            cursor: pointer;
+            overflow: hidden;
+            
+            transition: all var(--duration-normal) var(--ease-glass);
+            transform: translateZ(0);
+            will-change: transform, background, border-color, box-shadow;
         }
 
-        .icon-button {
-            background: none;
-            color: var(--icon-button-color);
-            border: none;
+        /* Glass Button Shimmer Effect */
+        .glass-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.1), 
+                transparent);
+            transition: left var(--duration-slow) var(--ease-smooth);
+            pointer-events: none;
+        }
+
+        .glass-button:hover {
+            background: var(--glass-hover);
+            border-color: var(--accent-primary);
+            box-shadow: var(--glass-glow-primary);
+            transform: translateY(-1px) translateZ(0);
+        }
+
+        .glass-button:hover::before {
+            left: 100%;
+        }
+
+        .glass-button:active {
+            transform: translateY(0) scale(0.98) translateZ(0);
+        }
+
+        /* Glass Icon Button */
+        .glass-icon-button {
+            /* Circular Glass Icon Button */
+            position: relative;
+            width: 36px;
+            height: 36px;
+            background: var(--glass-primary);
+            backdrop-filter: var(--glass-blur-subtle);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-full);
             padding: var(--header-icon-padding);
-            border-radius: 8px;
-            font-size: var(--header-font-size-small);
-            font-weight: 500;
+            
+            color: var(--text-primary);
             display: flex;
-            opacity: 0.6;
-            transition: opacity 0.2s ease;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            overflow: hidden;
+            
+            opacity: 0.8;
+            transition: all var(--duration-normal) var(--ease-glass);
+            transform: translateZ(0);
+            will-change: transform, background, border-color, box-shadow, opacity;
         }
 
-        .icon-button svg {
+        .glass-icon-button svg {
             width: var(--icon-size);
             height: var(--icon-size);
+            transition: transform var(--duration-normal) var(--ease-glass);
         }
 
-        .icon-button:hover {
-            background: var(--hover-background);
+        .glass-icon-button:hover {
+            background: var(--glass-hover);
+            border-color: var(--accent-primary);
+            box-shadow: var(--glass-glow-primary);
             opacity: 1;
+            transform: translateY(-1px) scale(1.05) translateZ(0);
         }
 
-        .button:hover {
-            background: var(--hover-background);
+        .glass-icon-button:hover svg {
+            transform: scale(1.1);
         }
 
-        :host([isclickthrough]) .button:hover,
-        :host([isclickthrough]) .icon-button:hover {
-            background: transparent;
+        .glass-icon-button:active {
+            transform: translateY(0) scale(1.02) translateZ(0);
         }
 
-        .key {
-            background: var(--key-background);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 12px;
-            margin: 0px;
+        /* Click-through State */
+        :host([isclickthrough]) .glass-button:hover,
+        :host([isclickthrough]) .glass-icon-button:hover {
+            background: var(--glass-primary);
+            border-color: var(--glass-border);
+            box-shadow: none;
+            transform: none;
+        }
+
+        /* Keyboard Shortcut Key */
+        .glass-key {
+            background: var(--glass-secondary);
+            backdrop-filter: var(--glass-blur-subtle);
+            border: 1px solid var(--glass-border-subtle);
+            border-radius: var(--radius-sm);
+            padding: var(--space-1) var(--space-2);
+            
+            font-size: var(--text-xs);
+            font-weight: var(--font-medium);
+            color: var(--text-secondary);
+            font-family: var(--font-mono);
+            
+            box-shadow: 
+                0 1px 2px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            
+            transition: all var(--duration-fast) var(--ease-smooth);
+        }
+
+        .glass-key:hover {
+            background: var(--glass-hover);
+            color: var(--text-primary);
+        }
+
+        /* Status Indicators */
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding: var(--space-2) var(--space-3);
+            background: var(--glass-secondary);
+            backdrop-filter: var(--glass-blur-subtle);
+            border: 1px solid var(--glass-border-subtle);
+            border-radius: var(--radius-lg);
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--accent-success);
+            border-radius: var(--radius-full);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Responsive Design */
+        @container (max-width: 600px) {
+            .glass-header {
+                padding: var(--space-2) var(--space-3);
+                gap: var(--space-2);
+            }
+            
+            .header-title {
+                font-size: var(--text-sm);
+            }
+            
+            .glass-icon-button {
+                width: 32px;
+                height: 32px;
+            }
+            
+            .glass-button {
+                padding: var(--space-1) var(--space-2);
+                font-size: var(--text-xs);
+            }
+        }
+
+        /* Performance Optimizations */
+        .gpu-accelerated {
+            transform: translateZ(0);
+            will-change: transform, opacity, backdrop-filter;
         }
     `;
 
@@ -202,18 +371,23 @@ export class AppHeader extends LitElement {
         const elapsedTime = this.getElapsedTime();
 
         return html`
-            <div class="header">
+            <div class="glass-header gpu-accelerated">
                 <div class="header-title">${this.getViewTitle()}</div>
                 <div class="header-actions">
                     ${this.currentView === 'assistant'
                         ? html`
-                              <span>${elapsedTime}</span>
-                              <span>${this.statusText}</span>
+                              <div class="status-indicator">
+                                  <div class="status-dot"></div>
+                                  <span>${elapsedTime}</span>
+                              </div>
+                              <div class="status-indicator">
+                                  <span>${this.statusText}</span>
+                              </div>
                           `
                         : ''}
                     ${this.currentView === 'main'
                         ? html`
-                              <button class="icon-button" @click=${this.onHistoryClick}>
+                              <button class="glass-icon-button" @click=${this.onHistoryClick}>
                                   <?xml version="1.0" encoding="UTF-8"?><svg
                                       width="24px"
                                       height="24px"
@@ -255,7 +429,7 @@ export class AppHeader extends LitElement {
                               </button>
                               ${this.advancedMode
                                   ? html`
-                                        <button class="icon-button" @click=${this.onAdvancedClick} title="Advanced Tools">
+                                        <button class="glass-icon-button" @click=${this.onAdvancedClick} title="Advanced Tools">
                                             <?xml version="1.0" encoding="UTF-8"?><svg
                                                 width="24px"
                                                 stroke-width="1.7"
@@ -298,7 +472,7 @@ export class AppHeader extends LitElement {
                                         </button>
                                     `
                                   : ''}
-                              <button class="icon-button" @click=${this.onCustomizeClick}>
+                              <button class="glass-icon-button" @click=${this.onCustomizeClick}>
                                   <?xml version="1.0" encoding="UTF-8"?><svg
                                       width="24px"
                                       height="24px"
@@ -324,7 +498,7 @@ export class AppHeader extends LitElement {
                                       ></path>
                                   </svg>
                               </button>
-                              <button class="icon-button" @click=${this.onHelpClick}>
+                              <button class="glass-icon-button" @click=${this.onHelpClick}>
                                   <?xml version="1.0" encoding="UTF-8"?><svg
                                       width="24px"
                                       height="24px"
@@ -361,11 +535,11 @@ export class AppHeader extends LitElement {
                         : ''}
                     ${this.currentView === 'assistant'
                         ? html`
-                              <button @click=${this.onHideToggleClick} class="button">
-                                  Hide&nbsp;&nbsp;<span class="key" style="pointer-events: none;">${cheddar.isMacOS ? 'Cmd' : 'Ctrl'}</span
-                                  >&nbsp;&nbsp;<span class="key">&bsol;</span>
+                              <button @click=${this.onHideToggleClick} class="glass-button">
+                                  Hide&nbsp;&nbsp;<span class="glass-key" style="pointer-events: none;">${cheddar.isMacOS ? 'Cmd' : 'Ctrl'}</span
+                                  >&nbsp;&nbsp;<span class="glass-key">&bsol;</span>
                               </button>
-                              <button @click=${this.onCloseClick} class="icon-button window-close">
+                              <button @click=${this.onCloseClick} class="glass-icon-button window-close">
                                   <?xml version="1.0" encoding="UTF-8"?><svg
                                       width="24px"
                                       height="24px"
@@ -386,7 +560,7 @@ export class AppHeader extends LitElement {
                               </button>
                           `
                         : html`
-                              <button @click=${this.isNavigationView() ? this.onBackClick : this.onCloseClick} class="icon-button window-close">
+                              <button @click=${this.isNavigationView() ? this.onBackClick : this.onCloseClick} class="glass-icon-button window-close">
                                   <?xml version="1.0" encoding="UTF-8"?><svg
                                       width="24px"
                                       height="24px"
