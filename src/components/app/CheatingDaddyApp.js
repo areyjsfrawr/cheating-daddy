@@ -7,6 +7,7 @@ import { HistoryView } from '../views/HistoryView.js';
 import { AssistantView } from '../views/AssistantView.js';
 import { OnboardingView } from '../views/OnboardingView.js';
 import { AdvancedView } from '../views/AdvancedView.js';
+import { ChatView } from '../views/ChatView.js';
 
 export class CheatingDaddyApp extends LitElement {
     static styles = css`
@@ -408,6 +409,11 @@ export class CheatingDaddyApp extends LitElement {
         this.requestUpdate();
     }
 
+    handleChatClick() {
+        this.currentView = 'chat';
+        this.requestUpdate();
+    }
+
     handleAdvancedClick() {
         this.currentView = 'advanced';
         this.requestUpdate();
@@ -614,6 +620,16 @@ export class CheatingDaddyApp extends LitElement {
             case 'history':
                 return html` <history-view></history-view> `;
 
+            case 'chat':
+                return html`
+                    <chat-view
+                        .selectedProfile=${this.selectedProfile}
+                        .selectedLanguage=${this.selectedLanguage}
+                        .selectedScreenshotInterval=${this.selectedScreenshotInterval}
+                        .selectedImageQuality=${this.selectedImageQuality}
+                    ></chat-view>
+                `;
+
             case 'advanced':
                 return html` <advanced-view></advanced-view> `;
 
@@ -662,6 +678,7 @@ export class CheatingDaddyApp extends LitElement {
                         .onHelpClick=${() => this.handleHelpClick()}
                         .onHistoryClick=${() => this.handleHistoryClick()}
                         .onAdvancedClick=${() => this.handleAdvancedClick()}
+                        .onChatClick=${() => this.handleChatClick()}
                         .onCloseClick=${() => this.handleClose()}
                         .onBackClick=${() => this.handleBackClick()}
                         .onHideToggleClick=${() => this.handleHideToggle()}

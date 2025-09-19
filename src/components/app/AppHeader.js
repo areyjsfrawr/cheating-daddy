@@ -63,6 +63,22 @@ export class AppHeader extends LitElement {
             -webkit-app-region: no-drag;
         }
 
+        .tab-button {
+            position: relative;
+            background: var(--glass-secondary);
+            backdrop-filter: var(--glass-blur-subtle);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-full);
+            padding: var(--space-2) var(--space-4);
+            color: var(--text-primary);
+            font-size: var(--text-sm);
+            font-weight: var(--font-medium);
+            cursor: pointer;
+            transition: all var(--duration-normal) var(--ease-glass);
+        }
+        .tab-button:hover { background: var(--glass-hover); border-color: var(--accent-primary); box-shadow: var(--glass-glow-primary); }
+        .tab-button.active { background: var(--glass-focus); border-color: var(--accent-primary); box-shadow: var(--glass-glow-primary); }
+
         .header-actions span {
             font-size: var(--header-font-size-small);
             color: var(--text-secondary);
@@ -270,6 +286,7 @@ export class AppHeader extends LitElement {
         isClickThrough: { type: Boolean, reflect: true },
         advancedMode: { type: Boolean },
         onAdvancedClick: { type: Function },
+        onChatClick: { type: Function },
     };
 
     constructor() {
@@ -286,6 +303,7 @@ export class AppHeader extends LitElement {
         this.isClickThrough = false;
         this.advancedMode = false;
         this.onAdvancedClick = () => {};
+        this.onChatClick = () => {};
         this._timerInterval = null;
     }
 
@@ -350,6 +368,7 @@ export class AppHeader extends LitElement {
             history: 'Conversation History',
             advanced: 'Advanced Tools',
             assistant: 'Cheating Daddy',
+            chat: 'Chat',
         };
         return titles[this.currentView] || 'Cheating Daddy';
     }
@@ -387,6 +406,7 @@ export class AppHeader extends LitElement {
                         : ''}
                     ${this.currentView === 'main'
                         ? html`
+                              <button class="tab-button ${this.currentView === 'chat' ? 'active' : ''}" @click=${this.onChatClick}>Chat</button>
                               <button class="glass-icon-button" @click=${this.onHistoryClick}>
                                   <?xml version="1.0" encoding="UTF-8"?><svg
                                       width="24px"
