@@ -382,7 +382,7 @@ export class AppHeader extends LitElement {
     }
 
     isNavigationView() {
-        const navigationViews = ['customize', 'help', 'history', 'advanced'];
+        const navigationViews = ['customize', 'help', 'history', 'advanced', 'chat'];
         return navigationViews.includes(this.currentView);
     }
 
