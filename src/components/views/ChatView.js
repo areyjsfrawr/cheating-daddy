@@ -276,7 +276,7 @@ export class ChatView extends LitElement {
                     </div>
                     <div class="actions">
                         ${this.screenShareEnabled ? html`
-                            <button class="glass-nav-button" title="Manual screenshot" @click=${() => window.captureManualScreenshot?.(this.selectedImageQuality)}>
+                            <button class="glass-nav-button" title="Manual screenshot" @click=${() => window.captureManualScreenshotOnly?.(this.selectedImageQuality)}>
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M4 7h4l2-2h4l2 2h4v12H4z"/>
                                     <circle cx="12" cy="13" r="4"/>

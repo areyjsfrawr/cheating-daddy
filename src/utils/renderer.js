@@ -561,8 +561,16 @@ async function captureManualScreenshot(imageQuality = null) {
         `);
 }
 
+// Capture a manual screenshot without sending any auto text
+async function captureManualScreenshotOnly(imageQuality = null) {
+    console.log('Manual screenshot (no text) triggered');
+    const quality = imageQuality || currentImageQuality;
+    await captureScreenshot(quality, true);
+}
+
 // Expose functions to global scope for external access
 window.captureManualScreenshot = captureManualScreenshot;
+window.captureManualScreenshotOnly = captureManualScreenshotOnly;
 
 function stopCapture() {
     if (screenshotInterval) {
